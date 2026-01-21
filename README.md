@@ -16,6 +16,13 @@ Telegram bot scaffold for automating FunPay account workflows (offers, chats, St
    pip install -r requirements.txt
    ```
 2. Copy `.env.example` to `.env` and fill in values.
+   - Generate a Fernet key with:
+     ```bash
+     python - <<'PY'
+     from cryptography.fernet import Fernet
+     print(Fernet.generate_key().decode())
+     PY
+     ```
 3. Run the bot:
    ```bash
    python main.py

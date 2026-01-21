@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import os
 
+from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 
 
@@ -31,6 +32,14 @@ def load_settings() -> Settings:
         raise ValueError("FUNPAY_GOLDEN_KEY is required")
     if not fernet_key:
         raise ValueError("FERNET_KEY is required")
+    try:
+        Fernet(fernet_key)
+    except ValueError as exc:
+        raise ValueError(
+            "FERNET_KEY must be a 32 url-safe base64-encoded bytes key. "
+            "Generate one with `python - <<'PY'\\nfrom cryptography.fernet import Fernet\\n"
+            "print(Fernet.generate_key().decode())\\nPY`."
+        ) from exc
 
     return Settings(
         telegram_token=telegram_token,
